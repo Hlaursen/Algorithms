@@ -22,7 +22,7 @@ public class Giantbook
         MyUnionFind uf = new MyUnionFind(n);
 
         //Generate UF data structure and add connections until the connected component emerges
-        int i = 0; //Number of edges that have been read
+        int i = 0; //Number of edges that have been read/
         while (true)
         {
           int p = StdRandom.uniform(n);

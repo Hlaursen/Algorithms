@@ -1,4 +1,4 @@
-/******************************************************************************
+/*******************************************************************************
  *  Compilation:  javac WeightedQuickUnionUF.java
  *  Execution:  java WeightedQuickUnionUF < input.txt
  *  Dependencies: StdIn.java StdOut.java
