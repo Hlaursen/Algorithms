@@ -68,13 +68,12 @@ public class Giantbook
         StdOut.println("Giant component emerges after random connection number: " + collectedResults[1][t]);
         StdOut.println("Connected component emerges after random connection number: " + collectedResults[2][t]);
       }
-
-      StdOut.println("\nisolatedMean: " + isolatedMean);
-      StdOut.println("isolatedStdDev: " + isolatedStdDev);
-      StdOut.println("giantMean: " + giantMean);
-      StdOut.println("giantStdDev: " + giantStdDev);
-      StdOut.println("connectedMean: " + connectedMean);
-      StdOut.println("connectedStdDev: " + connectedStdDev);
+      StdOut.printf("\nisolatedMean: %.2e", isolatedMean);
+      StdOut.printf("\nisolatedStdDev: %.2e", isolatedStdDev);
+      StdOut.printf("\ngiantMean: %.2e", giantMean);
+      StdOut.printf("\ngiantStdDev: %.2e", giantStdDev);
+      StdOut.printf("\nconnectedMean: %.2e", connectedMean);
+      StdOut.printf("\nconnectedStdDev: %.2e", connectedStdDev);
 
     }
 }
