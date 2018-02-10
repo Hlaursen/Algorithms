@@ -2,11 +2,13 @@ import edu.princeton.cs.algs4.*;
 import one.MyUnionFind;
 
 
-public class statGiantbook
+public class Giantbook
 {
     public static void main(String[] args)
     {
+      StdOut.println("Input size of MyUnionFind datastructure, n:");
       int n = StdIn.readInt(); //Size of data structure
+      StdOut.println("Input number of times to repeat, T:");
       int T = StdIn.readInt(); //Number of times to repeat experiment
       int[][] topResults = new int[T][3];
 
