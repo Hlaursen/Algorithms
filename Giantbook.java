@@ -1,68 +1,80 @@
-// Import MyUnionFind.java
 import edu.princeton.cs.algs4.*;
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import one.MyUnionFind;
 
 public class Giantbook
 {
     public static void main(String[] args)
     {
-      // Generate u and v uniformly at random (how to specify how many to choose from?)
-      /*Read from StdIn a number n, then n pairs of numbers u and v. An event happens
-      at time i if it happens after i edges have been read*/
-      int n = StdIn.readInt(); //Size of data structure
-      int t = StdIn.readInt(); // Number of times to repeat experiment
-      int[] a; // u and v array
-      int i = 0; //Number of edges that have been read
-      int i_isolated = -1; // Number of edges read when no more isolated nodes
-      int i_giant = -1; // Number of edges read when graph has a giant component
-      int i_connected = -1; // Number of edges read when the graph is connected
+      StdOut.println("Input size of MyUnionFind datastructure, n:");
+      int n = StdIn.readInt();                      //Size of data structure
+      StdOut.println("Input number of times to repeat, T:");
+      int T = StdIn.readInt();                      //Number of times to repeat experiment
+      StdOut.println("Running");
+      int[][] collectedResults = new int[3][T];     // Collects counts for each experiment
 
-      WeightedQuickUnionUF uf = new WeightedQuickUnionUF(n);
-      a = randomGenerator(n);
-
-      for (int x=0; x<t; x+=2) {
-        int p = a[x];
-        int q = a[x+1];
-        i++;
-        if (uf.connected(p, q)) continue;
-        uf.union(p, q);
-        if (uf.count() == 1) i_connected = i; // Check if the graph is connected
-
-      }
-
-      /*
-      while (!StdIn.isEmpty())
+      //Run experiment T times
+      for (int t=0; t<T; t++)
       {
-        int p = StdIn.readInt();
-        int q = StdIn.readInt();
-        i++; // Increment number of edges
-        if (uf.connected(p, q)) continue;
-        uf.union(p, q);
-        if (uf.count() == 1) i_connected = i; // Check if the graph is connected
-      }*/
+        int i_isolated = -1; // Number of edges read when no more isolated nodes
+        int i_giant = -1; // Number of edges read when graph has a giant component
+        int i_connected = -1; // Number of edges read when the graph is connected
+        int results[] = new int[3];
+        MyUnionFind uf = new MyUnionFind(n);
 
-      /* The output of your program is a single line with four numbers:
-      n, the number of vertices (that's how we can use it for a plot)
-      the first time the graph has no more isolated vertices
-      the first time that the graph has a giant component
-      the first time that the graph is connected. */
-      StdOut.println("Number of components: "+ n + " \nNumber of random connections before connected: " + i_connected + " \nNumber of components: " + uf.count());
-    }
+        //Generate UF data structure and add connections until the connected component emerges
+        int i = 0;      //Number of edges that have been read/
+        while (true)
+        {
+          int p = StdRandom.uniform(n);
+          int q = StdRandom.uniform(n);
+          i++;        // Increment number of edges
+          if (uf.connected(p, q)) continue;
+          uf.union(p, q);
 
-    public static int[] randomGenerator(int n) {
-      int factor = 10;
-      int[] a = new int[factor*n]; // Array for holding u and v, twice
-      for (int y=0; y<(factor*n); y++) {
-        a[y] = StdRandom.uniform(n);
+          // Giant component emerges
+          if (i_giant == -1 && uf.maxComponentSize() >= (n/2)) {
+            i_giant = i;
+          }
+
+          // No more isolated components exist
+          if (i_isolated == -1 && uf.isolatedComponents() == 0) {
+            i_isolated = i;
+          }
+
+          // Connected component emerges
+          if (i_connected == -1 && uf.count() == 1) {
+            i_connected = i;
+            collectedResults[0][t] = i_isolated;
+            collectedResults[1][t] = i_giant;
+            collectedResults[2][t] = i_connected;
+            break;
+          }
+        }
       }
-      return a;
+
+      // Statistical calculations
+      double isolatedMean = StdStats.mean(collectedResults[0]);
+      double isolatedStdDev = StdStats.stddev(collectedResults[0]);
+      double giantMean = StdStats.mean(collectedResults[1]);
+      double giantStdDev = StdStats.stddev(collectedResults[1]);
+      double connectedMean = StdStats.mean(collectedResults[2]);
+      double connectedStdDev = StdStats.stddev(collectedResults[2]);
+
+      // Print results
+      StdOut.println("\nUF size: " + n);
+      for (int t=0; t<T; t++)
+      {
+        StdOut.println("EXPERIMENT NUMBER: " + (t+1));
+        StdOut.println("No more isolated components emerge after random connection number: " + collectedResults[0][t]);
+        StdOut.println("Giant component emerges after random connection number: " + collectedResults[1][t]);
+        StdOut.println("Connected component emerges after random connection number: " + collectedResults[2][t]);
+      }
+      StdOut.printf("\nisolatedMean: %.2e", isolatedMean);
+      StdOut.printf("\nisolatedStdDev: %.2e", isolatedStdDev);
+      StdOut.printf("\ngiantMean: %.2e", giantMean);
+      StdOut.printf("\ngiantStdDev: %.2e", giantStdDev);
+      StdOut.printf("\nconnectedMean: %.2e", connectedMean);
+      StdOut.printf("\nconnectedStdDev: %.2e", connectedStdDev);
+
     }
-
-
-
-
-
-
-
-
 }
