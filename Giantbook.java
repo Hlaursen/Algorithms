@@ -9,6 +9,7 @@ public class Giantbook
       int n = StdIn.readInt();                      //Size of data structure
       StdOut.println("Input number of times to repeat, T:");
       int T = StdIn.readInt();                      //Number of times to repeat experiment
+      StdOut.println("Running");
       int[][] collectedResults = new int[3][T];     // Collects counts for each experiment
 
       //Run experiment T times
